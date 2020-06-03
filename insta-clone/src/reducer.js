@@ -1,19 +1,26 @@
-const PostReducer = (state, action) => {
+const songReducer = (state, action) => {
   switch (action.type) {
-    case "ADD_POST": {
-      const newPost = action.payload.post;
-      return { posts: [newPost, ...state.posts] };
+    case "PLAY_SONG": {
+      return {
+        ...state,
+        isPlaying: true
+      };
     }
-
-    case "DELETE_POST": {
-      const deletedID = action.payload.id;
-      return { posts: state.posts.filter(post => post.id !== deletedID) };
+    case "PAUSE_SONG": {
+      return {
+        ...state,
+        isPlaying: false
+      };
     }
-
-    default: {
+    case "SET_SONG": {
+      return {
+        ...state,
+        song: action.payload.song
+      };
+    }
+    default:
       return state;
-    }
   }
 };
 
-export default PostReducer;
+export default songReducer;
