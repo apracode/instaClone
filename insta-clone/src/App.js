@@ -1,55 +1,29 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  createContext,
-  useContext,
-  useReducer
-} from "react";
-import Login from "./components/Login";
-import Header from "./components/Header";
-import CreatePost from "./components/CreatePost";
-import PostList from "./components/PostList";
-import postReducer from "./reducer";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import FeedPage from "./pages/feed";
+import ExplorePage from "./pages/explore";
+import ProfilePage from "./pages/profile";
+import PostPage from "./pages/post";
+import EditProfilePage from "./pages/edit-profile";
+import LoginPage from "./pages/login";
+import SignUpPage from "./pages/signup";
+import NotFoundPage from "./pages/not-found";
 
-export const UserContext = createContext();
-export const PostContext = createContext({
-  posts: []
-});
-
-const App = () => {
-  const [user, setUser] = useState("anna");
-  // const [posts, setPosts] = useState([]);
-  const initialPostsState = useContext(PostContext);
-  const [state, dispatch] = useReducer(postReducer, initialPostsState);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    document.title = user ? `${user}'s Feed` : "Please Log In";
-  }, [user]);
-
-  // const handleAddPost = useCallback(
-  //   newPost => {
-  //     setPosts([newPost, ...posts]);
-  //   },
-  //   [posts]
-  // );
-
-  if (!user) {
-    return <Login setUser={setUser} />;
-  }
+function App() {
   return (
-    <PostContext.Provider value={{ state, dispatch }}>
-      <UserContext.Provider value={user}>
-        <Header user={user} setUser={setUser} />
-        <CreatePost
-          user={user}
-          // handleAddPost={handleAddPost}
-        />
-        <PostList user={user} posts={state.posts} />
-      </UserContext.Provider>
-    </PostContext.Provider>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={FeedPage} />
+        <Route path="/explore" component={ExplorePage} />
+        <Route exact path="/:username" component={ProfilePage} />
+        <Route exact path="/p/:postId" component={PostPage} />
+        <Route path="/accounts/edit" component={EditProfilePage} />
+        <Route path="/accounts/login" component={LoginPage} />
+        <Route path="/accounts/emailsignup" component={SignUpPage} />
+        <Route path="*" component={NotFoundPage} />
+      </Switch>
+    </Router>
   );
-};
+}
 
 export default App;
