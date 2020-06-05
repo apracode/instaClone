@@ -234,6 +234,7 @@ function Progress({ isAnimating }) {
       >
         <div className={classes.progressBackground} />
       </div>
+      
     </div>
   );
 }
