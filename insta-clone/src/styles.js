@@ -305,13 +305,14 @@ export const useNavbarStyles = makeStyles(theme => ({
     height: 28,
     marginLeft: "-3px",
     marginTop: "-3px",
-    position: "absolute",
+    // position: "absolute",
     width: "28px !important"
   },
   profileImage: {
     width: "22px !important",
     height: "22px !important",
-    marginBottom: "5px !important"
+    // marginBottom: "5px !important",
+    margin: "2px"
   },
   followers: {
     backgroundImage: `url(${IconSheet})`,
