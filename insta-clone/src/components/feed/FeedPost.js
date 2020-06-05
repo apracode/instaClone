@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useFeedPostStyles } from "../../styles";
 import UserCard from "../shared/UserCard";
+import FollowSuggestions from "../shared/FollowSuggestions";
+import OptionsDialog from "../shared/OptionsDialog";
+
+
 import {
   MoreIcon,
   ShareIcon,
@@ -20,17 +24,25 @@ import {
 } from "@material-ui/core";
 import HTMLEllipsis from "react-lines-ellipsis/lib/html";
 
-function FeedPost({ post }) {
+function FeedPost({ post, index }) {
   const classes = useFeedPostStyles();
   const { id, media, likes, user, caption, comments } = post;
   const [showCaption, setCaption] = useState(false);
+  const [showOptionsDialog, setShowOptionsDialog] = useState(false);
+  const showFollowSuggestions = index === 1;
 
   return (
     <>
-      <article className={classes.article}>
+      <article
+        className={classes.article}
+        style={{ marginBottom: showFollowSuggestions && 30 }}
+      >
         <div className={classes.postHeader}>
           <UserCard user={post.user} />
-          <MoreIcon className={classes.moreIcon} />
+          <MoreIcon
+            className={classes.moreIcon}
+            onClick={() => setShowOptionsDialog(true)}
+          />
         </div>
         <div>
           <img src={media} alt="Post media" className={classes.image} />
@@ -44,7 +56,7 @@ function FeedPost({ post }) {
             <ShareIcon />
             <SaveButton />
           </div>
-          <Typography className={classes.like} variant="subtitle2">
+          <Typography className={classes.likes} variant="subtitle2">
             <span>{likes === 1 ? "1 like" : `${likes} likes`}</span>
           </Typography>
           <div className={showCaption ? classes.expanded : classes.collapsed}>
@@ -118,6 +130,10 @@ function FeedPost({ post }) {
           <Divider />
         </Hidden>
       </article>
+      {showFollowSuggestions && <FollowSuggestions />}
+      {showOptionsDialog && (
+        <OptionsDialog onClose={() => setShowOptionsDialog(false)} />
+      )}
     </>
   );
 }
